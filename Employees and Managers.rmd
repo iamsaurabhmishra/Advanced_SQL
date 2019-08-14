@@ -26,11 +26,11 @@ INSERT INTO departments VALUES (50, 'IT'),
                               (60, 'HR')  
                               
                               
-Write a query that displays the list of employees, the department where they work, 
+#Write a query that displays the list of employees, the department where they work, 
 and the name of their manager. Display the results such that a value that repeats itself in the table receives the value Null.                              
 
 
-Solution:
+#Solution:
 
 WITH "EMP-DEP-CTE" AS  
    (  

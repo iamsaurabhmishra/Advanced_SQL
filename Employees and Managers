@@ -1,0 +1,59 @@
+Employees table – Each row on this table indicates the employee name, number, department number, and manager number.
+Departments table – Each row on this table indicates the department name and number.
+
+# script for populating the two tables
+
+CREATE TABLE employees  
+(emp_id int,   
+emp_name varchar(25),   
+dep_id int,   
+manager_id int)   
+  
+CREATE TABLE departments   
+(dep_id int,   
+dep_name varchar(25))    
+ 
+INSERT INTO employees VALUES (1, 'Moshe' , 50, NULL),  
+                             (2, 'Yossi' , 50, 1),  
+                             (3, 'Tomer' , 50, 1),  
+                             (4, 'Ronen' , 50, 1),  
+                             (5, 'Gadi'  , 60, NULL),  
+                             (6, 'Eyal'  , 60, 5),  
+                             (7, 'Avi'   , 60, 5),  
+                             (8, 'Elad'  , 60, 5)     
+  
+INSERT INTO departments VALUES (50, 'IT'),   
+                              (60, 'HR')  
+                              
+                              
+Write a query that displays the list of employees, the department where they work, 
+and the name of their manager. Display the results such that a value that repeats itself in the table receives the value Null.                              
+
+
+Solution:
+
+WITH "EMP-DEP-CTE" AS  
+   (  
+       SELECT e.emp_id , e.emp_name , e.manager_id , d.dep_name  
+       FROM employees e LEFT OUTER JOIN departments d   
+       ON   e.dep_id = d.dep_id  
+   ),  
+"EMP-MNG-CTE" AS  
+   (  
+   SELECT e.emp_id, e.emp_name as 'employee', e.dep_name , m.emp_name as 'manager' ,   
+          lag(e.dep_name) over (partition by e.dep_name order by e.emp_id) as 'lag_depname' 
+   FROM "EMP-DEP-CTE" e JOIN "EMP-DEP-CTE" m   
+   ON   e.manager_id = m.emp_id  
+   )  
+SELECT emp_id, employee,   
+       CASE WHEN  lag_depname = dep_name THEN NULL ELSE dep_name END as 'department',   
+       CASE WHEN  lag_depname = dep_name THEN NULL ELSE manager END as 'manager' 
+FROM "EMP-MNG-CTE" 
+
+                              
+                              
+                              
+                              
+                              
+                              
+                              

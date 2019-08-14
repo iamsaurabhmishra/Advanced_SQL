@@ -1,6 +1,11 @@
 Employees table – Each row on this table indicates the employee name, number, department number, and manager number.
 Departments table – Each row on this table indicates the department name and number.
 
+Write a query that displays the list of employees, the department where they work, 
+and the name of their manager. Display the results such that a value that repeats itself in the table receives the value Null.                              
+
+
+
 # script for populating the two tables
 
 CREATE TABLE employees  
@@ -26,8 +31,6 @@ INSERT INTO departments VALUES (50, 'IT'),
                               (60, 'HR')  
                               
                               
-#Write a query that displays the list of employees, the department where they work, 
-and the name of their manager. Display the results such that a value that repeats itself in the table receives the value Null.                              
 
 
 #Solution:

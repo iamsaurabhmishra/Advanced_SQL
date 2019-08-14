@@ -1,0 +1,41 @@
+#Given a products table which contains 9 products, each row indicates the product number, name, and price.
+#Write a query that finds, for each group, the difference between the lowest and highest price, and then calculate the average of all differences.
+
+#script for creating and populating the table
+
+CREATE TABLE products
+(p_id int identity(1,1),
+p_name varchar(25),
+p_price int)
+GO
+ 
+INSERT INTO products VALUES ('Product - A' , 100),
+('Product - B' , 120),
+('Product - C' , 200),
+('Product - D' , 270),
+('Product - E' , 310),
+('Product - F' , 370),
+('Product - G' , 450),
+('Product - H' , 600),
+('Product - I' , 700)
+
+The various products can be divided into three equal groups, based on their number: Number 1 to 3, number 4 to 6, and number 7 to 9.
+The difference between the lowest and highest price of group 1 is 100, the difference of group 2 is 100, the difference of group 3 is 250. 
+The average of 100, 100, and 250 is 150.
+
+
+#Solution
+WITH "PRODUCTS-CTE-NTILE" AS
+(
+SELECT * ,
+NTILE(3) OVER (ORDER BY p_price) NTL
+FROM products
+)
+,"PRODUCT-CTE-MIN-MAX" AS
+(
+SELECT MIN(p_price) MinRange, MAX(p_price) MaxRange
+FROM "PRODUCTS-CTE-NTILE"
+GROUP BY NTL
+)
+SELECT AVG(MaxRange - MinRange) AvgDiff
+FROM "PRODUCT-CTE-MIN-MAX"
